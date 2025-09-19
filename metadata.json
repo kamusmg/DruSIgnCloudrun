@@ -1,0 +1,7 @@
+{
+  "name": "DRU SIGN Redesign Cloud AI Version",
+  "description": "Crie o redesign da sua fachada em minutos. Uma ferramenta de IA da Dru Sign para projetos instantâneos.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
