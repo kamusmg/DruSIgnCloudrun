@@ -272,9 +272,7 @@ function App() {
           console.error("Redesign generation failed:", error);
           let customError: Error;
           if (error instanceof Error) {
-              // FIX: Handle both the prompt block error and the generic generation failure
-              // with the same user-friendly message.
-              if (error.message === "AI_IMAGE_GENERATION_FAILED" || error.message === "AI_PROMPT_BLOCKED") {
+              if (error.message === "AI_IMAGE_GENERATION_FAILED") {
                   customError = new Error("A IA não conseguiu gerar uma imagem. Isso pode acontecer por alguns motivos:\n\n- O pedido pode ter sido bloqueado por filtros de segurança (ex: uso de marcas registradas, nomes de pessoas, etc.).\n- A IA pode ter tido dificuldade em interpretar o pedido.\n\nPor favor, tente simplificar ou reformular sua solicitação e tente novamente.");
                   customError.name = "Falha na Geração de Imagem";
               } else {

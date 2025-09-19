@@ -10,10 +10,10 @@ export const ErrorDisplay: React.FC<ErrorDisplayProps> = ({ error, onReset }) =>
   if (!error) {
     return null;
   }
-
-  // Gather additional diagnostic information for the AI
-  const userAgent = typeof navigator !== 'undefined' ? navigator.userAgent : 'N/A';
-  const timestamp = new Date().toISOString();
+  
+  // A specific check for the handled image generation failure.
+  // This error has a user-friendly message that is sufficient.
+  const isGenerationFailure = error.name === 'Falha na Geração de Imagem';
 
   return (
     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[100] p-4 animate-fade-in" role="alertdialog" aria-modal="true" aria-labelledby="error-title">
@@ -28,21 +28,30 @@ export const ErrorDisplay: React.FC<ErrorDisplayProps> = ({ error, onReset }) =>
                   Oops! Algo deu errado.
                 </h2>
                 <p className="text-red-700 dark:text-red-300 mt-1">
-                    Um erro inesperado ocorreu. Por favor, envie os detalhes técnicos abaixo para a IA.
+                    Encontramos um erro inesperado. Por favor, reinicie o aplicativo.
                 </p>
             </div>
           </div>
         </div>
 
-        <div className="mt-6 bg-red-100 dark:bg-gray-800 p-4 rounded-lg text-sm max-h-[40vh] overflow-y-auto">
+        <div className="mt-6 bg-red-100 dark:bg-gray-800 p-4 rounded-lg text-sm">
             <details open>
-                <summary className="font-semibold text-red-800 dark:text-red-300 cursor-pointer">Detalhes Técnicos para Diagnóstico</summary>
+                <summary className="font-semibold text-red-800 dark:text-red-300 cursor-pointer">Detalhes Técnicos</summary>
                 <div className="mt-2 text-red-700 dark:text-red-400 font-mono text-xs whitespace-pre-wrap break-words">
-                  <p><strong>Tipo:</strong> {error.name}</p>
-                  <p><strong>Mensagem:</strong> {error.message}</p>
-                  <p className="mt-2"><strong>Timestamp:</strong> {timestamp}</p>
-                  <p><strong>User Agent:</strong> {userAgent}</p>
-                  {error.stack && <p className="mt-2"><strong>Stack Trace:</strong><br/>{error.stack}</p>}
+                  {/* For controlled generation failures, show only the helpful message. */}
+                  {isGenerationFailure ? (
+                    <>
+                      <p><strong>Tipo:</strong> {error.name}</p>
+                      <p><strong>Mensagem:</strong> {error.message}</p>
+                    </>
+                  ) : (
+                    /* For all other unexpected errors, show full details. */
+                    <>
+                      <p><strong>Tipo:</strong> {error.name}</p>
+                      <p><strong>Mensagem:</strong> {error.message}</p>
+                      {error.stack && <p className="mt-2"><strong>Stack Trace:</strong><br/>{error.stack}</p>}
+                    </>
+                  )}
                 </div>
             </details>
         </div>
